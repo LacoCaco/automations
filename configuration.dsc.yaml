@@ -1,0 +1,124 @@
+# a winget config file to be used after rebuilding my computer
+# by Laco Caco
+properties:
+  assertions:
+    - resource: Microsoft.Windows.Developer/OsVersion
+      directives:
+        description: Verify min OS version requirement
+        allowPrerelease: true
+      settings:
+        MinVersion: '10.0.22000'
+  resources:
+    - resource: Microsoft.WinGet.DSC/WinGetPackage
+      id: malwarebytes
+      directives:
+        description: Install Malwarebytes
+        allowPrerelease: false
+      settings:
+        id: Malwarebytes.Malwarebytes
+        source: winget
+    - resource: Microsoft.WinGet.DSC/WinGetPackage
+      id: steam
+      directives:
+        description: Install Steam
+        allowPrerelease: false
+      settings:
+        id: Valve.Steam
+        source: winget
+    - resource: Microsoft.WinGet.DSC/WinGetPackage
+      id: discord
+      directives:
+        description: Install Discord
+        allowPrerelease: false
+      settings:
+        id: Discord.Discord
+        source: winget
+    - resource: Microsoft.WinGet.DSC/WinGetPackage
+      id: brave
+      directives:
+        description: Install Brave
+        allowPrerelease: false
+      settings:
+        id: Brave.Brave
+        source: winget
+    - resource: Microsoft.WinGet.DSC/WinGetPackage
+      id: Notepad++.Notepad++
+      directives:
+        description: Install Notepad++
+        allowPrerelease: false
+      settings:
+        id: Notepad++.Notepad++
+        source: winget
+    - resource: Microsoft.WinGet.DSC/WinGetPackage
+      id: whatsApp
+      directives:
+        description: Install WhatsApp
+        allowPrerelease: false
+      settings:
+        id: WhatsApp.WhatsApp
+        source: winget
+    - resource: Microsoft.WinGet.DSC/WinGetPackage
+      id: geForceExperience
+      directives:
+        description: Install GeForceExperience
+        allowPrerelease: false
+      settings:
+        id: Nvidia.GeForceExperience
+        source: winget
+    - resource: Microsoft.WinGet.DSC/WinGetPackage
+      id: spotify
+      directives:
+        description: Install Spotify
+        allowPrerelease: false
+      settings:
+        id: Spotify.Spotify
+        source: winget
+    - resource: Microsoft.WinGet.DSC/WinGetPackage
+      id: enpass
+      directives:
+        description: Install Enpass
+        allowPrerelease: false
+      settings:
+        id: Sinew.Enpass
+        source: winget
+    - resource: Microsoft.WinGet.DSC/WinGetPackage
+      id: vlc
+      directives:
+        description: Install VLC
+        allowPrerelease: false
+      settings:
+        id: VideoLAN.VLC
+        source: winget
+    - resource: Microsoft.WinGet.DSC/WinGetPackage
+      id: nzxtCam
+      directives:
+        description: Install nzxt cam
+        allowPrerelease: false
+      settings:
+        id: NZXT.CAM
+        source: winget
+    - resource: Microsoft.WinGet.DSC/WinGetPackage
+      id: logoptions
+      directives:
+        description: Install logitech options
+        allowPrerelease: false
+      settings:
+        id: Logitech.Options
+        source: winget
+    - resource: Microsoft.WinGet.DSC/WinGetPackage
+      id: logGHUB
+      directives:
+        description: Install Logitech GHUB
+        allowPrerelease: false
+      settings:
+        id: Logitech.GHUB
+        source: winget
+    - resource: Microsoft.WinGet.DSC/WinGetPackage
+      id: acrobatReader
+      directives:
+        description: Install Acrobat Reader
+        allowPrerelease: false
+      settings:
+        id: Adobe.Acrobat.Reader.64-bit
+        source: winget
+  configurationVersion: 0.2.0
