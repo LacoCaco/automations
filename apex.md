@@ -1,4 +1,4 @@
-#Apex Legends Startup options to be set:
+# Apex Legends Startup options to be set:
 ```
 -high -dev -forcenovsync -fullscreen
 ```
