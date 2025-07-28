@@ -3,45 +3,99 @@ param(
     [string]$Scenario
 )
 
-# 🧃 Always remove unnecessary apps
-Get-AppxPackage *WindowsFeedbackHub* | Remove-AppxPackage
-Get-AppxPackage *GetHelp* | Remove-AppxPackage
-Get-AppxPackage *ZuneMusic* | Remove-AppxPackage
-Get-AppxPackage *Microsoft.MicrosoftOfficeHub* | Remove-AppxPackage
-Get-AppxPackage *BingNews* | Remove-AppxPackage
-Get-AppxPackage *Teams* | Remove-AppxPackage
-Get-AppxPackage *Microsoft.Todos* | Remove-AppxPackage
-Get-AppxPackage *OneDriveSync* | Remove-AppxPackage
-winget uninstall Microsoft.OneDrive --accept-source-agreements
-Get-AppxPackage *MicrosoftStickyNotes* | Remove-AppxPackage
-Get-AppxPackage *BingWeather* | Remove-AppxPackage
-Get-AppxPackage *MicrosoftCorporationII.QuickAssist* | Remove-AppxPackage
-Get-AppxPackage *Microsoft.MicrosoftSolitaireCollection* | Remove-AppxPackage
+# Define app operations with action: Install or Uninstall
+$apps = @(
+    # UNINSTALLATION
+    @{ Name = "*WindowsFeedbackHub*"; Action = "uninstall"; Type = "Appx" },
+    @{ Name = "*GetHelp*"; Action = "uninstall"; Type = "Appx" },
+    @{ Name = "*ZuneMusic*"; Action = "uninstall"; Type = "Appx" },
+    @{ Name = "*Microsoft.MicrosoftOfficeHub*"; Action = "uninstall"; Type = "Appx" },
+    @{ Name = "*BingNews*"; Action = "uninstall"; Type = "Appx" },
+    @{ Name = "*Teams*"; Action = "uninstall"; Type = "Appx" },
+    @{ Name = "*Microsoft.Todos*"; Action = "uninstall"; Type = "Appx" },
+    @{ Name = "*OneDriveSync*"; Action = "uninstall"; Type = "Appx" },
+    @{ Name = "Microsoft.OneDrive"; Action = "uninstall"; Type = "Winget" },
+    @{ Name = "*MicrosoftStickyNotes*"; Action = "uninstall"; Type = "Appx" },
+    @{ Name = "*BingWeather*"; Action = "uninstall"; Type = "Appx" },
+    @{ Name = "*MicrosoftCorporationII.QuickAssist*"; Action = "uninstall"; Type = "Appx" },
+    @{ Name = "*Microsoft.MicrosoftSolitaireCollection*"; Action = "uninstall"; Type = "Appx" },
+    # INSTALLATION
+    @{ Name = "9WZDNCRFJ3TJ"; Action = "install"; Type = "Winget" }, # Netflix
+    @{ Name = "Prime Video for Windows"; Action = "install"; Type = "Winget" },
+    @{ Name = "Enpass Password Manager"; Action = "install"; Type = "Winget" },
+    @{ Name = "iCloud "; Action = "install"; Type = "Winget" },
+    @{ Name = "Mozilla Thunderbird"; Action = "install"; Type = "Winget" },
+    @{ Name = "SpotifyAB.SpotifyMusic"; Action = "install"; Type = "Winget" },
+    @{ Name = "Brave"; Action = "install"; Type = "Winget" },
+    @{ Name = "Visual Studio Code"; Action = "install"; Type = "Winget" },
+    @{ Name = "WhatsApp"; Action = "install"; Type = "Winget" },
+    @{ Name = "ShiftCryptoAG.BitBoxApp"; Action = "install"; Type = "Winget" },
+    @{ Name = "LedgerHQ.LedgerLive"; Action = "install"; Type = "Winget" },
+    @{ Name = "Logitech.OptionsPlus"; Action = "install"; Type = "Winget" },
+    @{ Name = "Malwarebytes.Malwarebytes"; Action = "install"; Type = "Winget" },
+    @{ Name = "Notepad\+\+.Notepad\+\+"; Action = "install"; Type = "Winget" },
+    @{ Name = "Proton Mail Bridge"; Action = "install"; Type = "Winget" },
+    @{ Name = "VideoLAN.VLC"; Action = "install"; Type = "Winget" }
+)
 
-# 🧃 Always install Basic apps
-winget install "*Netflix" --source msstore --accept-source-agreements --accept-package-agreements
-winget install "AmazonVideo.PrimeVideo" --source msstore --accept-source-agreements --accept-package-agreements
-winget install "SinewSoftwareSystems.EnpassPasswordManager" --source msstore --accept-source-agreements --accept-package-agreements
-winget install "AppleInc.iCloud " --source msstore --accept-source-agreements --accept-package-agreements
-winget install "MozillaThunderbird.MZLA" --source msstore --accept-source-agreements --accept-package-agreements
-winget install "SpotifyAB.SpotifyMusic" --source msstore --accept-source-agreements --accept-package-agreements
-winget install --id XP8C9QZMS2PC1T --source msstore --accept-source-agreements --accept-package-agreements	#Brave Browser
-winget install --id XP89DCGQ3K6VLD --source msstore --accept-source-agreements --accept-package-agreements	#Powertoys
-winget install "Visual Studio Code" --source msstore --accept-source-agreements --accept-package-agreements
-winget install "*WhatsAppDesktop" --source msstore --accept-source-agreements --accept-package-agreements
-winget install -e --id ShiftCryptoAG.BitBoxApp;
-winget install -e --id LedgerHQ.LedgerLive;
-winget install -e --id Logitech.OptionsPlus;
-winget install -e --id Malwarebytes.Malwarebytes;
-winget install -e --id Notepad++.Notepad++;
-winget install -e --id ProtonTechnologies.ProtonMailBridge;
-winget install -e --id VideoLAN.VLC;
-
-# 🔐 Conditionally install Advanced apps
+# Conditional installs for Gaming scenario
 if ($Scenario -eq "Gaming") {
-    winget install "Discord" --source msstore --accept-source-agreements --accept-package-agreements
-    winget install -e --id Logitech.GHUB;
-    winget install -e --id Nvidia.GeForceExperience;
-    winget install -e --id NZXT.CAM;
-    winget install -e --id Valve.Steam;
+    $apps += @(
+        @{ Name = "Discord"; Action = "install"; Type = "Winget" },
+        @{ Name = "Logitech.GHUB"; Action = "install"; Type = "Winget" },
+        @{ Name = "Nvidia.GeForceExperience"; Action = "install"; Type = "Winget" },
+        @{ Name = "NZXT.CAM"; Action = "install"; Type = "Winget" },
+        @{ Name = "Valve.Steam"; Action = "install"; Type = "Winget" }
+    )
+}
+
+$failed = @()
+
+# Main operation loop
+foreach ($app in $apps) {
+    $name = $app.Name
+    $action = $app.Action
+    $type = $app.Type
+
+    Write-Host "`n▶️ ${action}: ${name}"
+
+    try {
+        if ($type -eq "Appx") {
+            if ($action -eq "uninstall") {
+                $pkg = Get-AppxPackage $name
+                if ($pkg) {
+                    $pkg | Remove-AppxPackage
+                }
+                if (Get-AppxPackage $name) {
+                    $failed += "$name (Appx uninstall failed)"
+                }
+            } else {
+                throw "Install not supported for Appx packages"
+            }
+        } elseif ($type -eq "Winget") {
+            if ($action -eq "install") {
+                winget install "$name" --source msstore --accept-source-agreements --accept-package-agreements --silent *> $null 2>&1
+                if (-not (winget list | Select-String "$name")) {
+                    $failed += "$name (Winget install failed)"
+                }
+            } elseif ($action -eq "uninstall") {
+                winget uninstall "$name" --accept-source-agreements --silent *> $null 2>&1
+                if (winget list | Select-String "$name") {
+                    $failed += "$name (Winget uninstall failed)"
+                }
+            }
+        }
+    } catch {
+        Write-Warning "❗ $name error: $_"
+        $failed += "$name (error)"
+    }
+}
+
+# 🧾 Final report
+Write-Host "`n--- 🔍 FINAL STATUS ---"
+if ($failed.Count -eq 0) {
+    Write-Host "✅ All operations succeeded."
+} else {
+    Write-Host "❌ Failed operations:"
+    $failed | ForEach-Object { Write-Host "- $_" }
 }
